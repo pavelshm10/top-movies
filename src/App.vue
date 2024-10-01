@@ -1,13 +1,35 @@
 <template>
   <div id="app">
-    <router-view />
+    <Loader v-if="isLoading" />
+    <router-view
+      @route-change-start="showLoading"
+      @route-change-end="hideLoading"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from "vue";
+import Loader from "./components/Loader/Loader.vue";
 
-export default defineComponent({});
+export default defineComponent({
+  components: {
+    Loader,
+  },
+  setup() {
+    const isLoading = ref(false);
+
+    const showLoading = () => {
+      isLoading.value = true;
+    };
+
+    const hideLoading = () => {
+      isLoading.value = false;
+    };
+
+    return { isLoading, showLoading, hideLoading };
+  },
+});
 </script>
 
 <style>
