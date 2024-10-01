@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 interface Movie {
   title: string;
@@ -16,7 +16,7 @@ interface Movie {
 }
 
 export default defineComponent({
-  name: 'MovieCard',
+  name: "MovieCard",
   props: {
     movie: {
       type: Object as () => Movie,
