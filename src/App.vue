@@ -1,30 +1,49 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div id="app">
+    <h1>Popular Movies</h1>
+    <div class="movies-list">
+      <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" />
+    </div>
+  </div>
 </template>
+
+<script lang="ts">
+import { defineComponent, ref, onMounted } from 'vue';
+import MovieCard from './components/MovieCard.vue';
+import { fetchPopularMovies } from './services/movieService';
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    MovieCard,
+  },
+  setup() {
+    const movies = ref<any[]>([]);
+
+    const loadMovies = async () => {
+      try {
+        movies.value = await fetchPopularMovies();
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+    };
+
+    onMounted(loadMovies);
+
+    return { movies };
+  },
+});
+</script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  padding: 20px;
 }
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+.movies-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 </style>
